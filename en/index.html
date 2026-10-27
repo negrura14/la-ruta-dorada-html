@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ruta Dorada – Open Beta | Private Silkroad Online server</title>
+<meta name="description" content="Solo Leveling-style gates, hunter ranks, uniques with a live damage table and much more. A server that starts at Cap 80 and keeps growing.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080913; --bg2:#0f1120; --card:rgba(19,18,30,.84); --card2:rgba(28,24,38,.9);
+  --line:rgba(244,192,78,.16); --line2:rgba(244,192,78,.38);
+  --gold:#f5c451; --gold2:#e0a22a; --ember:#ff7a2f; --blood:#c0392b;
+  --cream:#f6ecd4; --text:#e4ddcf; --muted:#aaa4b6;
+  --serif:'Fraunces','Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --cinzel:'Cinzel','Trajan Pro',Georgia,serif;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.68;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:var(--gold);text-decoration:none}
+a:hover{text-decoration:underline}
+::selection{background:rgba(245,196,81,.35)}
+
+/* ---------- escenario: batalla, ruinas y fuego ---------- */
+.scene{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  background:
+   radial-gradient(1100px 600px at 80% -10%,rgba(120,40,30,.28),transparent 60%),
+   radial-gradient(900px 600px at 10% 10%,rgba(40,50,110,.30),transparent 60%),
+   linear-gradient(180deg,#0a0b18 0%,#0b0c1a 55%,#120c10 100%)}
+.fog{position:absolute;left:-30%;width:160%;height:50%;filter:blur(40px);opacity:.5}
+.fog.f1{bottom:6%;background:radial-gradient(closest-side,rgba(255,150,70,.20),transparent);animation:drift 38s linear infinite alternate}
+.fog.f2{bottom:-8%;background:radial-gradient(closest-side,rgba(180,70,40,.22),transparent);animation:drift 52s linear infinite alternate-reverse}
+@keyframes drift{from{transform:translateX(-8%)}to{transform:translateX(8%)}}
+.fireglow{position:absolute;left:0;right:0;bottom:0;height:60vh;
+  background:radial-gradient(ellipse 70% 80% at 50% 100%,rgba(255,106,30,.34),rgba(255,70,20,.10) 45%,transparent 70%);
+  animation:flicker 3.2s ease-in-out infinite}
+@keyframes flicker{0%,100%{opacity:.85}20%{opacity:1}35%{opacity:.7}55%{opacity:.98}75%{opacity:.78}}
+.ruins{position:absolute;left:0;right:0;bottom:0;height:46vh}
+.ruins svg{width:100%;height:100%;display:block}
+.flame{transform-box:fill-box;transform-origin:50% 100%;animation:flame .55s ease-in-out infinite alternate}
+.flame.b{animation-duration:.42s;animation-delay:-.2s}
+@keyframes flame{from{transform:scale(.9,.8) skewX(-3deg)}to{transform:scale(1.08,1.2) skewX(3deg)}}
+.flag{transform-box:fill-box;transform-origin:0 50%;animation:wave 3.6s ease-in-out infinite alternate}
+.flag.b{animation-delay:-1.4s}
+@keyframes wave{from{transform:skewY(-5deg) scaleX(.94)}to{transform:skewY(5deg) scaleX(1.03)}}
+#embers{position:absolute;inset:0;width:100%;height:100%}
+.vignette{position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 45%,rgba(0,0,0,.55) 100%)}
+.progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:50;background:linear-gradient(90deg,var(--ember),var(--gold));box-shadow:0 0 12px var(--ember)}
+
+/* ---------- columna ---------- */
+.wrap{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 18px 80px}
+
+/* ---------- hero ---------- */
+.hero{text-align:center;padding:64px 8px 28px}
+.eyebrow{font-family:var(--cinzel);letter-spacing:.32em;font-size:12px;color:var(--gold);text-transform:uppercase;display:inline-flex;align-items:center;gap:14px}
+.eyebrow:before,.eyebrow:after{content:"";width:34px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.eyebrow:after{background:linear-gradient(270deg,transparent,var(--gold))}
+.hero .logo{width:min(560px,86%);margin:22px auto 6px;filter:drop-shadow(0 6px 26px rgba(255,110,30,.45)) drop-shadow(0 0 2px rgba(0,0,0,.8));animation:logoglow 4s ease-in-out infinite}
+@keyframes logoglow{0%,100%{filter:drop-shadow(0 6px 22px rgba(255,110,30,.35)) drop-shadow(0 0 2px #000)}50%{filter:drop-shadow(0 6px 34px rgba(255,140,40,.6)) drop-shadow(0 0 2px #000)}}
+.hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(34px,6.2vw,56px);line-height:1.08;margin:18px 0 14px;color:var(--cream);letter-spacing:-.01em;text-shadow:0 2px 30px rgba(255,120,40,.25)}
+.hero h1 em{font-style:normal;background:linear-gradient(180deg,#ffe6a0,#f0b13a 55%,#d9811f);-webkit-background-clip:text;background-clip:text;color:transparent}
+.badge-beta{display:inline-block;background:linear-gradient(180deg,#ffd466,#e8a92c);color:#2a1a02;font-weight:800;letter-spacing:.14em;font-size:12px;padding:5px 14px;border-radius:8px;box-shadow:0 0 22px rgba(245,196,81,.45)}
+.sub{color:var(--muted);max-width:620px;margin:14px auto 0;font-size:17px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:30px 0 8px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 10px;backdrop-filter:blur(6px)}
+.stat b{display:block;font-family:var(--serif);font-weight:400;font-size:34px;color:var(--cream);line-height:1.1}
+.stat span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.stat.cap{border-color:var(--line2);box-shadow:0 0 26px rgba(255,122,47,.18) inset}
+.stat.cap b{color:var(--gold)}
+.cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:22px 0 4px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:12px;font-weight:700;font-size:15px;border:1px solid var(--line2);color:var(--cream);background:rgba(255,255,255,.04);transition:transform .2s,box-shadow .2s,background .2s;text-decoration:none!important}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(255,122,47,.25);background:rgba(255,255,255,.08)}
+.btn.primary{background:linear-gradient(180deg,#ffd466,#e0a22a);color:#2a1a02;border-color:#ffe29a;box-shadow:0 6px 24px rgba(245,196,81,.35)}
+.btn.primary:hover{box-shadow:0 10px 34px rgba(255,160,40,.55)}
+.scroll-hint{margin-top:26px;color:var(--muted);font-size:12px;letter-spacing:.3em;text-transform:uppercase;animation:bob 2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(6px)}}
+
+.launch{display:inline-flex;flex-direction:column;align-items:center;gap:2px;margin:26px auto 4px;padding:16px 34px;border-radius:18px;border:1px solid var(--line2);position:relative;
+  background:linear-gradient(180deg,rgba(60,26,18,.85),rgba(24,18,30,.9));box-shadow:0 0 40px rgba(255,122,47,.28),inset 0 1px 0 rgba(255,220,150,.12);animation:pulse 4s ease-in-out infinite}
+.launch span{font-family:var(--cinzel);letter-spacing:.34em;font-size:12px;color:var(--ember);text-transform:uppercase;font-weight:700}
+.launch b{font-family:var(--serif);font-weight:400;font-size:clamp(30px,6vw,46px);line-height:1.1;background:linear-gradient(180deg,#fff0b8,#f2b43c 55%,#d9811f);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.02em}
+.launch small{color:var(--muted);font-size:13px;letter-spacing:.08em}
+/* ---------- cards ---------- */
+.card{position:relative;margin:26px 0;padding:30px 34px 32px;background:var(--card);border:1px solid var(--line);border-radius:24px;
+  backdrop-filter:blur(8px);box-shadow:0 18px 50px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.04);transition:border-color .3s,box-shadow .3s}
+.card:before{content:"";position:absolute;left:34px;right:34px;top:-1px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.7}
+.card:hover{border-color:var(--line2);box-shadow:0 18px 56px rgba(0,0,0,.5),0 0 40px rgba(255,122,47,.10)}
+.card .num{font-family:var(--cinzel);color:var(--gold);letter-spacing:.3em;font-size:12px;opacity:.9}
+.card h2{font-family:var(--serif);font-weight:400;font-size:clamp(26px,4.4vw,34px);line-height:1.15;margin:6px 0 4px;color:var(--cream)}
+.card h2 + .rule{margin-bottom:18px}
+.rule{height:12px;position:relative;margin-top:10px}
+.rule:before{content:"";position:absolute;left:0;right:0;top:5px;height:1px;background:linear-gradient(90deg,var(--gold),rgba(245,196,81,.05))}
+.rule:after{content:"";position:absolute;left:0;top:1px;width:9px;height:9px;background:var(--ember);transform:rotate(45deg);box-shadow:0 0 12px var(--ember)}
+.card h3{font-family:var(--cinzel);font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:26px 0 10px;font-weight:600}
+.card p{margin:12px 0}
+.card b,.card strong{color:var(--cream);font-weight:650}
+ul.list{list-style:none;margin:10px 0 6px;padding:0}
+ul.list li{position:relative;padding:6px 0 6px 26px}
+ul.list li:before{content:"";position:absolute;left:5px;top:15px;width:7px;height:7px;background:var(--gold2);transform:rotate(45deg);box-shadow:0 0 8px rgba(255,150,40,.7)}
+.card.featured{border-color:var(--line2);background:linear-gradient(180deg,rgba(40,24,22,.9),rgba(19,18,30,.9));animation:pulse 4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 30px rgba(255,122,47,.16)}50%{box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 58px rgba(255,122,47,.34)}}
+.callout{margin:18px 0;padding:16px 20px;border-radius:14px;border:1px solid rgba(255,122,47,.4);background:linear-gradient(90deg,rgba(255,122,47,.16),rgba(255,122,47,.03));position:relative}
+.callout:before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:3px;background:linear-gradient(var(--gold),var(--ember))}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 4px}
+.chip{display:inline-flex;gap:8px;align-items:center;padding:9px 16px;border-radius:999px;border:1px solid var(--line2);background:rgba(255,255,255,.04);color:var(--cream)!important;font-size:14px;text-decoration:none!important}
+.chip:hover{background:rgba(245,196,81,.12)}
+.chip small{color:var(--muted)}
+
+/* escalera de caps */
+.ladder{display:flex;align-items:flex-start;justify-content:space-between;gap:0;margin:26px 2px 12px;position:relative}
+.ladder .step{flex:1;text-align:center;position:relative;min-width:0}
+.ladder .step:before{content:"";position:absolute;top:27px;left:-50%;width:100%;height:2px;background:repeating-linear-gradient(90deg,rgba(245,196,81,.5) 0 6px,transparent 6px 12px)}
+.ladder .step:first-child:before{display:none}
+.ladder .node{position:relative;z-index:1;margin:0 auto;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:19px;color:var(--muted);background:#12111c;border:1px solid rgba(245,196,81,.35)}
+.ladder .step.now .node{color:#2a1a02;font-weight:700;background:radial-gradient(circle at 35% 30%,#ffe9a8,#f0a92a 60%,#c2701a);border-color:#ffe29a;box-shadow:0 0 0 5px rgba(255,150,40,.18),0 0 30px rgba(255,122,47,.7);animation:flicker 2.4s infinite}
+.ladder .step.unk .node{color:var(--gold);font-size:24px;border-style:dashed;animation:pulse2 2.6s ease-in-out infinite}
+@keyframes pulse2{50%{box-shadow:0 0 22px rgba(245,196,81,.4)}}
+.ladder .lbl{display:block;margin-top:8px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ladder .step.now .lbl{color:var(--gold)}
+.ladder .node.sm{font-size:14px;width:auto;min-width:56px;padding:0 12px;border-radius:28px;white-space:nowrap}
+
+/* puertas */
+.gates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}
+.gate{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:14px;background:var(--card2);border:1px solid rgba(255,255,255,.07)}
+.gate .l{flex:none;width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-family:var(--cinzel);font-weight:700;font-size:20px;color:#0b0b12;background:var(--c);box-shadow:0 0 16px -2px var(--c)}
+.gate small{display:block;color:var(--muted);font-size:12px;line-height:1.3}
+.gate b{display:block;line-height:1.3;font-size:15px}
+.gate.red{border-color:rgba(255,80,60,.5);background:linear-gradient(135deg,rgba(150,30,20,.35),var(--card2))}
+/* rangos */
+.ranks{display:grid;gap:12px;margin:14px 0}
+.rank{display:grid;grid-template-columns:54px 1fr;gap:16px;padding:16px 18px;border-radius:16px;background:var(--card2);border:1px solid rgba(255,255,255,.07);position:relative;overflow:hidden}
+.rank:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c);box-shadow:0 0 14px var(--c)}
+.rank .l{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:var(--cinzel);font-weight:800;font-size:28px;color:#0b0b12;background:var(--c);box-shadow:0 0 22px -2px var(--c)}
+.rank .n{font-family:var(--serif);font-size:20px;color:var(--cream);line-height:1.2}
+.rank .bn{color:var(--text);font-size:14.5px;margin-top:2px}
+.rank .rq{color:var(--muted);font-size:13.5px;margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,255,255,.1)}
+.rank .rq b{color:var(--c)}
+.rank.S{background:linear-gradient(135deg,rgba(120,80,10,.35),var(--card2));border-color:rgba(255,210,74,.4)}
+
+/* imágenes */
+figure{margin:20px 0 6px}
+figure img{width:100%;height:auto;border-radius:14px;border:1px solid var(--line2);box-shadow:0 10px 34px rgba(0,0,0,.55);cursor:zoom-in;transition:transform .35s,box-shadow .35s}
+figure:hover img{transform:scale(1.012);box-shadow:0 14px 44px rgba(0,0,0,.65),0 0 34px rgba(255,122,47,.25)}
+figcaption{text-align:center;font-size:13px;color:var(--muted);margin-top:9px;font-style:italic}
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 6px}
+.gallery figure{margin:0}
+.gallery.one{grid-template-columns:1fr}
+figure.mini{text-align:center}
+figure.mini img{width:auto;max-width:100%;height:auto;display:inline-block;image-rendering:auto;cursor:default;transform-origin:center}
+figure.mini:hover img{transform:none}
+figure.closing img{max-width:520px;margin:0 auto}
+.closing-card{text-align:center}
+.closing-card .cta{margin-top:20px}
+.soon .tag{display:inline-block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;background:rgba(255,122,47,.16);border:1px solid rgba(255,122,47,.5);color:#ffb27c;padding:3px 10px;border-radius:999px;margin-bottom:6px}
+.note{color:var(--muted);font-size:13.5px;font-style:italic;text-align:center;margin:26px 0 0}
+footer.foot{margin-top:40px;text-align:center;color:var(--muted);font-size:13px}
+footer.foot .eyebrow{font-size:11px}
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(4,4,10,.92);display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
+.lb.on{display:flex;animation:fade .25s}
+.lb img{max-width:100%;max-height:100%;border-radius:12px;box-shadow:0 0 70px rgba(255,122,47,.3)}
+@keyframes fade{from{opacity:0}}
+/* reveal */
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s ease}
+.js .reveal.in{opacity:1;transform:none}
+@media (max-width:640px){
+  .card{padding:24px 20px 26px;border-radius:20px}.card:before{left:20px;right:20px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .gates{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gallery{grid-template-columns:1fr}
+  .rank{grid-template-columns:44px 1fr;gap:12px;padding:14px}.rank .l{width:44px;height:44px;font-size:22px}
+  .ladder .node{width:42px;height:42px;font-size:14px}.ladder .node.sm{width:auto;min-width:42px;height:42px;font-size:12px;padding:0 8px}.ladder .step:before{top:21px}.ladder .lbl{font-size:9.5px;letter-spacing:.06em}
+  .hero{padding-top:44px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .js .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="progress"></div>
+<div class="scene" aria-hidden="true"><div class="fog f1"></div><div class="fog f2"></div><div class="fireglow"></div><div class="ruins">
+<svg viewBox="0 0 1600 420" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+ <defs>
+  <linearGradient id="fl" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff5a14"/><stop offset=".55" stop-color="#ffa63a"/><stop offset="1" stop-color="#fff0a8"/></linearGradient>
+  <radialGradient id="hl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff8a30" stop-opacity=".55"/><stop offset="1" stop-color="#ff8a30" stop-opacity="0"/></radialGradient>
+ </defs>
+ <path d="M0 340 Q200 290 420 330 T820 318 T1200 305 T1600 330 V420 H0Z" fill="#0d0b17" opacity=".85"/>
+ <g fill="#08070f">
+  <polygon points="300,350 300,262 330,252 345,266 380,250 410,268 440,350"/>
+  <polygon points="114,350 114,192 118,184 126,188 130,176 138,186 138,350"/>
+  <rect x="106" y="176" width="40" height="9" rx="2"/>
+  <polygon points="168,350 168,236 176,229 180,238 190,231 190,350"/>
+  <polygon points="520,350 520,282 540,274 552,284 570,276 580,350"/>
+  <polygon points="1120,350 1120,176 1158,176 1158,350"/>
+  <polygon points="1288,350 1288,206 1300,196 1310,208 1326,190 1332,350"/>
+  <path d="M1112 182 Q1218 66 1326 168 L1296 182 Q1222 112 1160 182 Z"/>
+  <polygon points="1440,350 1440,156 1455,146 1459,160 1477,138 1489,156 1509,152 1520,350"/>
+  <rect x="1428" y="214" width="104" height="8"/>
+  <polygon points="840,350 840,300 870,292 884,302 910,296 930,350"/>
+  <rect x="619" y="170" width="5" height="180"/><rect x="979" y="190" width="5" height="160"/>
+ </g>
+ <path class="flag" d="M624 174 Q662 166 696 180 Q662 196 624 202Z" fill="#a8261c"/>
+ <path class="flag b" d="M984 194 Q1018 186 1052 200 Q1018 214 984 220Z" fill="#8f1f18"/>
+ <ellipse cx="248" cy="330" rx="46" ry="36" fill="url(#hl)" class="flame"/>
+ <path class="flame" d="M248 346 C236 330 242 318 248 306 C254 318 262 330 248 346Z" fill="url(#fl)"/>
+ <path class="flame b" d="M262 346 C256 336 258 330 262 322 C266 330 270 336 262 346Z" fill="url(#fl)" opacity=".9"/>
+ <rect x="236" y="346" width="34" height="6" fill="#08070f"/><rect x="244" y="350" width="18" height="12" fill="#08070f"/>
+ <ellipse cx="1224" cy="332" rx="56" ry="40" fill="url(#hl)" class="flame b"/>
+ <path class="flame" d="M1224 348 C1210 330 1218 316 1224 302 C1230 316 1238 330 1224 348Z" fill="url(#fl)"/>
+ <rect x="1210" y="348" width="30" height="6" fill="#08070f"/><rect x="1218" y="352" width="14" height="12" fill="#08070f"/>
+ <path d="M0 420 V366 Q300 336 600 358 T1200 352 T1600 364 V420Z" fill="#050509"/>
+ <g fill="#050509"><polygon points="60,372 70,350 76,372"/><polygon points="76,372 90,340 100,372"/><polygon points="700,366 712,344 720,366"/><polygon points="1380,364 1394,338 1404,364"/></g>
+</svg>
+</div><canvas id="embers"></canvas><div class="vignette"></div></div>
+<main class="wrap">
+<header class="hero"><div class="eyebrow">Private server · Silkroad Online</div><img class="logo" src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137634/logo.png" alt="Ruta Dorada"><div><span class="badge-beta">OPEN BETA!</span></div><h1>Every caravan <em>writes its legend</em></h1><p class="sub">Solo Leveling-style gates, hunter ranks, uniques with a live damage table and much more. A server that starts at Cap 80 and keeps growing.</p><div class="launch"><span>Grand opening</span><b>December 1, 2026</b><small id="cd" data-many="{n} days to go" data-one="1 day to go!" data-now="We're open!"></small></div><div class="stats"><div class="stat cap"><b>80</b><span>Starting cap</span></div><div class="stat "><b>x2</b><span>EXP</span></div><div class="stat "><b>x2</b><span>Gold</span></div><div class="stat "><b>x3</b><span>Drop</span></div></div><div class="cta"><a class="btn primary" href="https://larutadorada.com" target="_blank" rel="noopener">Create free account</a><a class="btn" href="https://larutadorada.com/descargar" target="_blank" rel="noopener">Download the game</a></div><div class="scroll-hint">Scroll to explore ↓</div></header>
+<section class="card reveal"><figure class=""><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137334/es_p00_0.jpg" alt="Ruta Dorada web portal" data-zoom><figcaption>Ruta Dorada web portal</figcaption></figure><p>Hello, travelers of the Silk Road! We are proud to present <b>Ruta Dorada</b>, a private Silkroad Online server built for relaxed play, where every level counts and there is far more to do than just leveling: Solo Leveling-style gates, hunter ranks, unique monsters with a live damage table, daily rewards, minigames and much more.</p><div class="callout"><p style="margin:0"><b>A server that grows with you:</b> Ruta Dorada <b>starts at Cap 80</b>, but that is only the starting point, not the final level. The level cap will rise <b>10 levels at a time</b> (80, 90, 100…) with no fixed dates, and the game content goes up to around <b>Cap 120–140</b>. The final cap is <b>not defined yet</b>: it could be 120, 130, 140, 150, etc.</p></div><p>The <b>open beta</b> is live. Here is everything available today and what arrives on <b>Wednesday 10/28</b>.</p><div class="links"><a class="chip" href="https://larutadorada.com" target="_blank" rel="noopener">Website <small>larutadorada.com</small></a><a class="chip" href="https://larutadorada.com/descargar" target="_blank" rel="noopener">Client download</a></div><p style="font-size:13.5px;color:var(--muted);margin:4px 0 0">Available in Spanish, English and Portuguese</p></section>
+<section class="card reveal" id="s1"><div class="num">I</div><h2>The essentials</h2><div class="rule"></div><ul class="list"><li><b>Rates:</b> EXP x2 · Gold x2 · Drop x3.</li><li><b>Starting level cap: 80</b> (Chapter 80), not the final cap. The cap rises progressively, 10 levels at a time, with no fixed dates. Today: Roc Mountain and 9D gear.</li><li><b>Web portal (larutadorada.com):</b> your account, the Silk shop, open gates, hunters and ranks, living uniques, the daily reward, El Bruto and the Arcade.</li><li><b>F10, the in-game Item Mall:</b> buy with Silk. Your <b>Item Storage Box</b> is there, where rewards, gate loot and purchases are delivered.</li><li><b>In-game guide with the H key:</b> a “Ruta Dorada” category with everything unique to the server, plus level-up tips at levels 10, 20, 30, 40, 50, 70, 71, 75 and 80.</li></ul><figure class=""><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137418/es_p01_0.jpg" alt="larutadorada.com web portal: home screen" data-zoom><figcaption>larutadorada.com web portal: home screen</figcaption></figure></section>
+<section class="card reveal featured" id="s2"><div class="num">II</div><h2>A server that keeps growing: progressive cap</h2><div class="rule"></div><div class="ladder"><div class="step now "><div class="node">80</div><span class="lbl">Today</span></div><div class="step  "><div class="node">90</div><span class="lbl">+10</span></div><div class="step  "><div class="node">100</div><span class="lbl">+10</span></div><div class="step  "><div class="node">110</div><span class="lbl">+10</span></div><div class="step  "><div class="node sm">120–140</div><span class="lbl">&nbsp;</span></div><div class="step  unk"><div class="node">?</div><span class="lbl">Final cap not defined</span></div></div><ul class="list"><li><b>We start at Cap 80:</b> it is the starting point, not the maximum level of the server.</li><li><b>10 levels at a time:</b> 80 → 90 → 100 → 110… Each increase opens the next levels and the content that goes with them.</li><li><b>No fixed schedule:</b> there is no set amount of time between one cap and the next.</li><li><b>Final cap not defined:</b> the game content goes up to around Cap 120–140, and we do not know yet where the server will stop: 120, 130, 140, 150, etc.</li><li>Everything in this post (gates, level brackets, ranks) refers to the current Cap 80.</li></ul></section>
+<section class="card reveal" id="s3"><div class="num">III</div><h2>Starter kit for every new character</h2><div class="rule"></div><p>Not just for the first character on your account: <b>every new character</b> gets it.</p><ul class="list"><li>Repair hammers</li><li>SP, return and speed scrolls</li><li>EXP scrolls</li><li>Nasrun avatar and grab pet (piggy)</li><li>7-day Premium Gold Time</li><li>One random avatar</li></ul><figure class=""><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137434/es_p01_1.jpg" alt="Starter kit in a new character's inventory" data-zoom><figcaption>Starter kit in a new character's inventory</figcaption></figure></section>
+<section class="card reveal" id="s4"><div class="num">IV</div><h2>Chapter 80 (current cap)</h2><div class="rule"></div><ul class="list"><li><b>Levels 71 to 79:</b> level up in Taklamakan (the north, the Niya ruins). While hunting level 71 to 80 monsters, pillars appear that can drop a 1 to 4-star <b>Dimension Hole (Flame Mountain)</b>.</li><li><b>At level 80, Roc Mountain opens:</b> flying ships from Hotan, Samarkand and Asia Minor, or the Reverse scroll. <b>Demon Shaitan</b> lives there, the unique that drops the most coins.</li><li><b>9D gear</b> in NPC shops, in the Ruta Dorada Shop, and <b>Astral and Immortal 9D</b> stones in the Item Mall (40 Silk).</li><li><b>Muhan Tower / Battle of Infinity (75):</b> wave defense for characters level 71 to 80, solo or in party, 2 entries per day. Enter through the Arena NPC.</li><li>Karakoram requires level 90: it will arrive when the cap rises, in a future chapter.</li></ul><figure class=""><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137479/es_p02_0.jpg" alt="Roc Mountain and Demon Shaitan" data-zoom><figcaption>Roc Mountain and Demon Shaitan</figcaption></figure></section>
+<section class="card reveal" id="s5"><div class="num">V</div><h2>Gates, Solo Leveling style</h2><div class="rule"></div><p>Dungeons that open at fixed times. Each one has a rank from E to S. Whoever finishes earns coins and rank points, and the fastest takes the loot.</p><figure class=""><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137491/es_p03_0.jpg" alt="The “Portal appearing” notice" data-zoom><figcaption>The “Portal appearing” notice</figcaption></figure><h3>When and how to enter</h3><ul class="list"><li><b>Schedule:</b> 14:30, 17:30, 20:30 and 22:30 (server time, UTC-5). A few minutes before, the “Portal appearing” notice is shown.</li><li><b>Entry:</b> through the <b>teleporter in Jangan, Hotan or Constantinople</b>, choosing “Gate E” … “Gate S (red)”. No mount, no caravan, no PVP cape and no job suit.</li><li><b>Always useful:</b> the system only spawns gates of ranks that at least one hunter can use.</li></ul><h3>Who can enter each gate (solo)</h3><div class="gates"><div class="gate" style="--c:#9aa3b2"><div class="l">E</div><div><b>Level 20–70</b><small>E hunters</small></div></div><div class="gate" style="--c:#5fbf7a"><div class="l">D</div><div><b>Level 40–70</b><small>D hunters</small></div></div><div class="gate" style="--c:#4aa3ff"><div class="l">C</div><div><b>Level 50–80</b><small>C hunters</small></div></div><div class="gate" style="--c:#a86bff"><div class="l">B</div><div><b>Level 70–80</b><small>B hunters</small></div></div><div class="gate" style="--c:#ff8a3d"><div class="l">A</div><div><b>Level 75–80</b><small>A hunters</small></div></div><div class="gate red" style="--c:#ff4d3a"><div class="l">S</div><div><b>Level 80</b><small>S hunters · red</small></div></div></div><p>The gate takes you to the dungeon for <b>your level bracket</b>: 24–31, 32–41, 42–51, 52–63, 64–70 and 71–80. Below 24 you go to the first one. Gate S has its own dungeon.</p><h3>Inside: a 15-minute race against the clock</h3><ul class="list"><li>First you clear the <b>horde of 30</b> monsters, then you kill the gate's <b>unique</b> (two of them in some brackets). While it lives, it summons 4 elites every 30 seconds.</li><li>You compete against players in your bracket and your <b>category</b>: <b>Strength</b> (90% or more of your points in STR), <b>Magic</b> (90% or more in INT) or <b>Hybrid</b>.</li><li><b>Rewards:</b> everyone who finishes earns coins (E 2 · D 3 · C 4 · B 5 · A 6 · S 8) and rank points. The best time in each category gets the loot, 50% more points and 1.5x the coins. Everything is delivered to the Item Storage Box.</li><li><b>Careful:</b> some gates are <b>traps</b> (they hide a higher rank and pay out as such). The <b>red gate</b> is sealed: you cannot leave with a scroll until its boss falls. If nobody closes it in time there is a <b>breach</b>: the monsters spill out into the world.</li></ul><figure class=""><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137504/es_p04_0.jpg" alt="Inside a gate: fighting the horde" data-zoom><figcaption>Inside a gate: fighting the horde</figcaption></figure><div class="gallery"><figure><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137516/es_p04_1.jpg" alt="High-rank gates and breaches" data-zoom></figure><figure><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137528/es_p05_0.jpg" alt="High-rank gates and breaches" data-zoom></figure></div><p class="note" style="margin:8px 0 0">High-rank gates and breaches</p></section>
+<section class="card reveal" id="s6"><div class="num">VI</div><h2>Hunter rank, from E to S</h2><div class="rule"></div><p>Every character has a rank shown next to the name (“Name [D]”) and a title with bonuses. Everyone starts at E. Your rank <b>goes up and down</b> depending on your Power.</p><ul class="list"><li><b>Power (0 to 100),</b> recalculated every hour from 5 pillars: Level 15%, Gear 30%, Achievements and titles 20%, Events in the last 30 days 20% and Gates 15%.</li><li><b>Automatic promotion</b> once an hour, once you meet every requirement. The seal and the party coins are deducted when you log out.</li></ul><div class="ranks"><div class="rank E" style="--c:#9aa3b2"><div class="l">E</div><div><div class="n">Awakened</div><div class="bn">HP +100. Starting rank.</div></div></div><div class="rank D" style="--c:#5fbf7a"><div class="l">D</div><div><div class="n">Tracker</div><div class="bn">STR and INT +1, HP +200.</div><div class="rq"><b>Requirements:</b> Power 25, level 40, Hunter Seal D (15 coins).</div></div></div><div class="rank C" style="--c:#4aa3ff"><div class="l">C</div><div><div class="n">Hunter</div><div class="bn">STR and INT +2, HP +300, speed and accuracy +5%.</div><div class="rq"><b>Requirements:</b> Power 45, level 50, gear 40/100, 3 events in 30 days, seal C (40).</div></div></div><div class="rank B" style="--c:#a86bff"><div class="l">B</div><div><div class="n">Elite Hunter</div><div class="bn">STR and INT +3, HP +400, speed and accuracy +7%.</div><div class="rq"><b>Requirements:</b> Power 60, level 70, gear 55/100, close 1 C+ gate, seal B (80) and 15 party coins.</div></div></div><div class="rank A" style="--c:#ff8a3d"><div class="l">A</div><div><div class="n">Master Hunter</div><div class="bn">STR and INT +4, HP +600, speed and accuracy +10%, block +2%.</div><div class="rq"><b>Requirements:</b> Power 75, level 75, achievements 50/100, 3 B+ gates, kill the unique of an A gate, seal A (160) and 40 party coins.</div></div></div><div class="rank S" style="--c:#ffd24a"><div class="l">S</div><div><div class="n">Monarch</div><div class="bn">STR and INT +5, HP +900, speed +12%, accuracy +15%, block +3%.</div><div class="rq"><b>Requirements:</b> Power 88, level 80, close an S gate, seal S (320) and 100 party coins.</div></div></div></div><p>Check your progress in the notice when you enter the game, in the Uniques skull → Ranks tab, or at larutadorada.com/rangos.</p><figure class=""><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137542/es_p06_0.jpg" alt="The portal's Ranks page" data-zoom><figcaption>The portal's Ranks page</figcaption></figure><figure class="mini"><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137555/es_p06_1.jpg" alt="The rank is shown next to the character name" style="width:322px"><figcaption>The rank is shown next to the character name</figcaption></figure></section>
+<section class="card reveal" id="s7"><div class="num">VII</div><h2>Combativity coins</h2><div class="rule"></div><p>There are two kinds: <b>solo</b> and <b>party</b>. Both can be traded between players. Party coins are also required to promote to B, A and S.</p><h3>How to earn them</h3><ul class="list"><li>Finishing gates (2 to 8 depending on the rank).</li><li>Hunting uniques: starting with Captain Ivy they also drop party coins.</li><li>In El Bruto and, once in a while, from any monster.</li><li>Exchange at the Hunter Association: 2 Arena Coins for 1 coin.</li></ul><h3>What they are spent on</h3><ul class="list"><li>Hunter Seal to promote: D 15 · C 40 · B 80 · A 160 · S 320.</li><li>Premium Magic POP Card: 25.</li><li>Low Quality Shining Stone: 5.</li><li>Entry to the Chamber of Vicious Shadows: 8 party coins.</li></ul></section>
+<section class="card reveal" id="s8"><div class="num">VIII</div><h2>Uniques</h2><div class="rule"></div><ul class="list"><li><b>“Uniques” notice:</b> the golden skull next to the Facebook notice opens the uniques page: which ones are alive, who hunted them, your hunt and the podium.</li><li><b>Live damage table:</b> when you select a unique you see who hits it hardest (you in green). When it falls, the chat announces the top 3 and the final blow.</li></ul><h3>Coins they drop (solo / party)</h3><ul class="list"><li>Tiger Girl: 1 / —</li><li>Uruchi: 2 / —</li><li>Isyutaru: 3 / —</li><li>Lord Yarkan and Tahomet (level 70): 4 / —</li><li>Black Snake and Bonelord (level 80): 4 / 3–6</li><li>Demon Shaitan (level 90): 5 / 4–8</li></ul><figure class=""><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137568/es_p07_0.jpg" alt="The uniques: which are alive and who hunted them" data-zoom><figcaption>The uniques: which are alive and who hunted them</figcaption></figure></section>
+<section class="card reveal" id="s9"><div class="num">IX</div><h2>Events and systems</h2><div class="rule"></div><ul class="list"><li><b>Magic POP:</b> with a Magic POP Card (normal or Premium), play the machine in town and choose your prize. If you win, you get a red coupon for that prize; if not, a green coupon for a lesser one. Coupons are redeemed with Magic POP Guide Gori. When someone wins, the whole server finds out.</li><li><b>Daily reward:</b> once per day per account: Daily Login notice (next to the Facebook one) → Claim, or at larutadorada.com/recompensas. The week advances from day 1 to day 7 and day 7 brings the best reward; it resets on Monday.</li><li><b>El Bruto:</b> automatic fights in the portal with your real characters (stats, gear and skills): against players, gladiators and uniques. Missions, tournaments and a Power ranking. From level 25, with a weapon and 4 armor pieces; each skill requires its weapon.</li><li><b>Arcade:</b> four minigames in the portal: Forge, Dragon Rain, Golden Caravan and Unique Hunter. They cost Silk and reward only items.</li><li><b>Muhan Tower:</b> Battle of Infinity 75, waves to defend against, for levels 71–80, solo or in party, 2 entries per day.</li><li><b>Job crafting:</b> 14 thief and hunter recipes, using pearls or stones, to craft job gear.</li><li><b>Stronger fellows:</b> triple the STR, INT and health of the original, all 4 skill book slots open from level 1 and more speed.</li><li><b>Auto-potion with Vigor:</b> in the macro (T key) there is a Vigor row: it is used automatically when your HP or MP drops below the percentage you choose.</li><li><b>Sort button:</b> sorts your inventory with one click (or by typing .ordenar in chat): gear, potions, scrolls and the rest, each kept together.</li></ul><figure class=""><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137582/es_p08_0.jpg" alt="The Magic POP machine" data-zoom><figcaption>The Magic POP machine</figcaption></figure><figure class=""><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137594/es_p09_0.jpg" alt="El Bruto in the portal" data-zoom><figcaption>El Bruto in the portal</figcaption></figure><figure class=""><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/v1793137606/es_p09_1.jpg" alt="The Arcade in the portal" data-zoom><figcaption>The Arcade in the portal</figcaption></figure></section>
+<section class="card reveal" id="s10"><div class="num">X</div><h2>Tips to get started</h2><div class="rule"></div><ul class="list"><li><b>Press H</b> whenever you have questions: the Ruta Dorada category explains gates, ranks, coins and rewards.</li><li><b>Claim the daily reward every day:</b> the week only reaches day 7 if you do not miss a day.</li><li><b>Enter gates through the teleporter</b> in Jangan, Hotan or Constantinople, not by looking for the portal on the map. The spot shown in the notice is where the breach will happen.</li><li><b>Buy the Hunter Seal before you meet the requirements:</b> without the seal you will not rank up, even with the Power and level.</li><li><b>To promote to B, A and S, save party coins:</b> they are deducted when you log out.</li><li><b>Your pet picks up Specialty Goods Boxes</b> if you choose “Grab all item” in its filter.</li><li><b>Spend your stat points with purpose:</b> in gates you compete against your own category (Strength, Magic or Hybrid).</li><li><b>Hunt uniques at your level:</b> the ones that show up blue for you today drop nothing.</li><li>The Astral and Immortal stones from Magic POP are bound to you: they cannot be traded.</li></ul></section>
+<section class="card reveal soon" id="s11"><div class="num">XI</div><h2>Coming soon · Wednesday 10/28</h2><div class="rule"></div><p><i>In preparation. Every item is tested before release, so some may slip to a later date.</i></p><ul class="list"><li><b>Shop with level tokens:</b> vigors and everything needed to revive, feed and heal the fellow, paid for with Monk's, Soldier's and General's Token.</li><li><b>Top 3 unique rewards:</b> the three players who deal the most damage receive 1 Pandora's Box and 5 Monster Scrolls in their Item Storage Box.</li><li><b>Potions from level 1:</b> monsters drop HP and MP Recovery Grain (Small) and vigors.</li><li><b>Party coins at the Hunter Association:</b> 1 party coin for 20 solo coins or for 20 Arena Coins.</li><li><b>Forgotten World boxes:</b> they give the talismans of the SUN 8D weapon set; if no talisman drops, a Magic POP as consolation.</li><li><b>Promote with one button:</b> “Promote now” on the Ranks page, with a server-wide announcement; the title is applied when you log out.</li><li><b>Uniques in the blue bracket:</b> under study, so they drop their loot even if you outlevel them.</li><li><b>Improved hunting macro:</b> more options for the game's auto-leveling.</li><li><b>Skill bar fix:</b> skills are no longer lost when teleporting or entering.</li><li><b>Economy adjustments:</b> Specialty Goods Box a bit scarcer; new characters start with 10,000 SP; the inventory extension moves to the Item Mall (299 Silk).</li><li><b>“Defend the Fortress” event:</b> in design. Defend gates, towers and a heart against waves that grow over 20 minutes, with rewards for everyone who takes part.</li></ul></section>
+<section class="card reveal closing-card" id="s11"><h2>We are waiting for you!</h2><div class="rule"></div><p>Create your account at <b>larutadorada.com</b>, build your first character and set out on the Ruta Dorada. If you have any questions, suggestions or bugs to report, reply in this thread and tell us: the beta is open precisely so we can improve the server together with you.</p><figure class="closing"><img src="https://res.cloudinary.com/dhxqy1y6/image/upload/f_auto,q_auto/en_p05_0" alt="The journey awaits you · larutadorada.com" data-zoom></figure><div class="cta"><a class="btn primary" href="https://larutadorada.com" target="_blank" rel="noopener">Create my account</a><a class="btn" href="https://larutadorada.com/descargar" target="_blank" rel="noopener">Download the game</a></div></section>
+<p class="note">All times are in server time (UTC-5). Beta data as of 10/24/2026.</p>
+<footer class="foot"><div class="eyebrow">Ruta Dorada · Open beta</div></footer>
+</main>
+<script>
+document.documentElement.classList.add('js');
+(function(){
+  // barra de progreso
+  var bar=document.querySelector('.progress');
+  function onScroll(){var h=document.documentElement;var m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?h.scrollTop/m*100:0)+'%'}
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+  // reveal
+  var els=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.08,rootMargin:'0px 0px -6% 0px'});
+    els.forEach(function(e){io.observe(e)});
+  }else els.forEach(function(e){e.classList.add('in')});
+  // lightbox
+  var lb=document.createElement('div');lb.className='lb';lb.innerHTML='<img alt="">';document.body.appendChild(lb);
+  var lbi=lb.querySelector('img');
+  document.querySelectorAll('figure img[data-zoom]').forEach(function(i){i.addEventListener('click',function(){lbi.src=i.src;lb.classList.add('on')})});
+  lb.addEventListener('click',function(){lb.classList.remove('on')});
+  addEventListener('keydown',function(e){if(e.key==='Escape')lb.classList.remove('on')});
+  // cuenta regresiva
+  var cd=document.getElementById('cd');
+  if(cd){var d=Math.ceil((new Date(2026,11,1)-new Date())/864e5);
+    cd.textContent=d>1?cd.dataset.many.replace('{n}',d):d===1?cd.dataset.one:cd.dataset.now}
+  // brasas
+  var cv=document.getElementById('embers');if(!cv)return;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce)return;
+  var ctx=cv.getContext('2d'),W,H,P=[],dpr=Math.min(devicePixelRatio||1,2);
+  function size(){W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+  function mk(init){return{x:Math.random()*W,y:init?Math.random()*H:H+10,r:Math.random()*2.2+.5,vy:Math.random()*.9+.35,sw:Math.random()*Math.PI*2,sp:Math.random()*.02+.006,a:Math.random()*.7+.3,h:Math.random()*35+8}}
+  size();addEventListener('resize',size);
+  var N=Math.round(Math.min(110,W/14));for(var i=0;i<N;i++)P.push(mk(true));
+  var run=true;document.addEventListener('visibilitychange',function(){run=!document.hidden;if(run)loop()});
+  function loop(){
+    if(!run)return;ctx.clearRect(0,0,W,H);ctx.globalCompositeOperation='lighter';
+    for(var i=0;i<P.length;i++){var p=P[i];p.y-=p.vy;p.sw+=p.sp;p.x+=Math.sin(p.sw)*.5+.12;p.a-=.0016;
+      if(p.y<-10||p.a<=0||p.x>W+10){P[i]=mk(false);continue}
+      var g=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*5);
+      g.addColorStop(0,'hsla('+p.h+',100%,62%,'+p.a+')');g.addColorStop(1,'hsla('+p.h+',100%,50%,0)');
+      ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,p.r*5,0,6.283);ctx.fill()}
+    requestAnimationFrame(loop)}
+  loop();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+Subir a GitHub Pages:
+1. Crear un repositorio (p. ej. ruta-dorada) y subir TODO el contenido de esta carpeta a la raiz (incluido .nojekyll).
+2. Settings > Pages > Source: "Deploy from a branch" > rama main, carpeta /(root) > Save.
+3. Links resultantes (tras 1-2 minutos):
+   https://<usuario>.github.io/<repo>/        (elige idioma segun el navegador)
+   https://<usuario>.github.io/<repo>/es/
+   https://<usuario>.github.io/<repo>/en/
+Las imagenes se cargan desde Cloudinary, no hay que subirlas.
